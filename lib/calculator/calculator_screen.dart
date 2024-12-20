@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
 
-class CalculatorScreen extends StatefulWidget {
-  const CalculatorScreen({super.key});
+void main() {
+  runApp(CalculatorApp());
+}
 
+class CalculatorApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CalculatorScreen(),
+    );
+  }
+}
+
+class CalculatorScreen extends StatefulWidget {
   @override
   _CalculatorScreenState createState() => _CalculatorScreenState();
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
-  // Controllers for input fields
+  // Text controllers to retrieve user input
   TextEditingController num1Controller = TextEditingController();
   TextEditingController num2Controller = TextEditingController();
 
-  double result = 0; // Holds the calculation result
+  double result = 0;
 
-  // Function to perform calculations
   void calculate(String operator) {
     double num1 = double.tryParse(num1Controller.text) ?? 0;
     double num2 = double.tryParse(num2Controller.text) ?? 0;
@@ -32,114 +42,121 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal[600],
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                    topRight: Radius.circular(60),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildCustomTextField(num1Controller, "Num1"),
-                      SizedBox(height: 20),
-                      _buildCustomTextField(num2Controller, "Num2"),
-                    ],
-                  ),
+      backgroundColor: Colors.white,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // First Input Field
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.teal,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(60),
+                    bottomRight: Radius.circular(60))),
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextField(
+                      controller: num1Controller,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Num1',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white54,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
+                    TextField(
+                      controller: num2Controller,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Num2',
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white54,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Container(
-              color: Colors.white,
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 30),
-              child: Text(
+          ),
+          SizedBox(height: 40),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: 20,
+                width: 50,
+                color: Colors.teal,
+              ),
+              Text(
                 'Result = $result',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, color: Colors.black),
               ),
-            ),
-            Container(
-              color: Colors.teal[600],
-              padding: EdgeInsets.symmetric(vertical: 20),
+              Container(
+                height: 20,
+                width: 50,
+                color: Colors.teal,
+              ),
+            ],
+          ),
+          SizedBox(height: 40),
+
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                  color: Colors.teal,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                      topRight: Radius.circular(60))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildOperationButton('+'),
-                  _buildOperationButton('-'),
-                  _buildOperationButton('x'),
-                  _buildOperationButton('/'),
+                  ElevatedButton(
+                    onPressed: () => calculate('+'),
+                    child: Text('+'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+
+                  // Subtract Button
+                  ElevatedButton(
+                    onPressed: () => calculate('-'),
+                    child: Text('-'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+
+                  ElevatedButton(
+                    onPressed: () => calculate('x'),
+                    child: Text('x'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+
+                  // Divide Button
+                  ElevatedButton(
+                    onPressed: () => calculate('/'),
+                    child: Text('/'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCustomTextField(TextEditingController controller, String hintText) {
-    return TextField(
-      controller: controller,
-      keyboardType: TextInputType.number,
-      style: TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey),
-        filled: true,
-        fillColor: Colors.teal[600],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide(
-            color: Colors.black,
-            width: 2,
           ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide(
-            color: Colors.black,
-            width: 2,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide(
-            color: Colors.orange,
-            width: 2,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOperationButton(String operator) {
-    return ElevatedButton(
-      onPressed: () => calculate(operator),
-      child: Text(
-        operator,
-        style: TextStyle(fontSize: 18, color: Colors.black),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        elevation: 5,
-        shadowColor: Colors.black.withOpacity(0.3),
+        ],
       ),
     );
   }
