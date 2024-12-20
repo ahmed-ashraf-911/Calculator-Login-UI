@@ -16,6 +16,7 @@ class LogInPage extends StatelessWidget {
               Colors.orange.shade800,
               Colors.orange.shade400,
             ],
+
           ),
         ),
         child: Column(
